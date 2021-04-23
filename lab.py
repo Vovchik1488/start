@@ -319,18 +319,6 @@ print(total(10,123,Jack=1123,John=2231,Inge=1560))
 
 # Только ключевые параметры
 
-def total(initial=5, *, extra_number):
-    count = initial
-    for number in numbers:
-        count += number
-    count += extra_number
-    print(count)
-
-total(10, 1, 2, 3, extra_number=50)
-total(10, 1, 2, 3 )
-# Вызовет ошибку, поскольку мы не указали значение
-# аргумента по умолчанию для 'extra_number'.
-
 # Оператор "return"
 
 def maximum(x, y):
@@ -575,7 +563,21 @@ source = ['"C:\\My Documents"', 'C:\\Code']
 # двойные кавычки внутри строки.
 
 # 2. Резервные копии должны храниться в основном каталоге резерва.
-target = target_dir + os.sep + time.strftime('%Y%m%d%H%M%S') + '.zip'
+target_dir = 'E:\\Backup' # Подставте ваш путь.
+
+# 3. Файлы помещаются в zip-архив.
+# 4. Именем для zip-архива служит текущая дата и время.
+today = target_dir + os.sep + time.strftime('%Y%m%d')
+# Текущее время служит именем zip-архива
+now = time.strftime('%H%M%S')
+
+# Создаём каталог если его ещё нет
+if not os.path.exists(today):
+    os.mkdir(today) # создание каталога
+    print('Каталог успешно создан', today)
+
+# Имя zip-файла
+target = today + os.sep + now + '.zip'
 
 # 5. Используем команду "zip" для помещения файлов в zip-архив
 zip_command = "zip -qr {0} {1}".format(target, ''.join(source))
@@ -585,4 +587,299 @@ if os.system(zip_command) == 0:
     print('Резервная копия успешно создана в', target)
 else:
     print('Создание резервной копии НЕ УДАЛОСЬ')
+
+
+# Классы
+class Person:
+    pass # Пустой блок
+
+p = Person()
+print(p)
+
+# Методы обьектов
+
+class Person:
+    def sayHi(self):
+        print('Привет! Как дела?')
+
+p = Person()
+p.sayHi()
+
+# Метод __init__
+class Person:
+    def __init__(self, name):
+        self.name = name
+
+    def say_hi(self):
+        print('Привет! Меня зовут', self.name)
+
+p = Person('Swaroop')
+p.say_hi()
+
+# Переменные класса и обьекта
+
+class Robot:
+    '''Представляет робота с именем'''
+    # Переменная класса содержащая количество роботов
+    population = 0
+
+    def __init__(self, name):
+        '''Инициализация данных'''
+        self.name = name
+        print('(Инициализация {0})'.format(self.name))
+
+        # При создании этой личности, робот добавляеться
+        # к переменной 'population'
+        Robot.population += 1
+
+    def __del__(self):
+        '''Я умираю'''
+        print('{0} уничтожаеться!'.format(self.name))
+
+        Robot.population -= 1
+
+        if Robot.population == 0:
+            print('{0} был последним.'.format(self.name))
+        else:
+            print('Осталось {0:d} работающих роботов.'.format(Robot.population))
+        
+    def sayHi(self):
+        '''Приветствие робота.
+
+        Да, они это могут.'''
+        print('Приветствую! мои хозяева называют меня {0}.'.format(self.name))
+
+    def howMany():
+        '''Выводит численность роботов.'''
+        print('У нас {0:d} роботов.'.format(Robot.population))
+
+    howMany = staticmethod(howMany)
+
+droid1 = Robot('R2-D2')
+droid1.sayHi()
+Robot.howMany()
+
+droid2 = Robot('C-3PO')
+droid2.sayHi()
+Robot.howMany()
+
+print("\nЗдесь роботы могут поделать какуе-то роботу.\n")
+
+print("Роботы закончили свою роботу. Давайте уничтожим их.")
+del droid1
+del droid2
+
+Robot.howMany()
+
+#  Наследование
+
+class SchoolMember:
+    '''Представляет любого человека в школе.'''
+    def ___init___(self, name, age):
+        self.name = name
+        self.age = age
+        print('(Создан SchoolMember: {0}'.format(self.name))
+    def tell(self):
+        '''Вывести информацию'''
+        print('Имя:"{0}" Возраст:"{1}"'.format(self.name, self.age), end=" ")
+
+class Teacher(SchoolMember):
+    '''Представляет преподавателя.'''
+    def ___init___( self, name, age, salary):
+        SchoolMember.___init___(self, name, age)
+        self.salary = salary
+        print('(Созадан Teacher: {0}'.format(self.name))
+
+    def tell(self):
+        SchoolMember.tell(self)
+        print('Зарплата: "{0-d}"'.format(self.salary))
+
+class Student(SchoolMember):
+    '''Представляет студента.'''
+    def ___init___(self, name, age, marks):
+        SchoolMember.___init___(self, name, age)
+        self.marks = marks
+        print('(Создан Student: {0}'.format(self.name))
+
+    def tell(self):
+        SchoolMember.tell(self)
+        print('Оценки:"{0:d}"'.format(self.marks))
+
+t = Teacher('Mrs. Shrividya', 40, 30000)
+s = Student('Swaroop', 25, 75)
+
+print() # печатает пустую строку
+
+members = [t, s]
+for member in members:
+    member.tell() # работает как для приподавателя, так и для студента
+
+
+# Метаклассы
+
+from abc import *
+
+class SchoolMember(metaclass=ABSMeta):
+    '''Представляет любого человека в школе'''
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+        print('(Создан SchoolMember: {0}'.format(self.name))
+
+    def tell(self):
+        '''Вывести информацию.'''
+        print('Имя:"{0}" Возраст:"{1}"'.format(self.name, self.age), end=" ")
+
+class Teacher(SchoolMember):
+    '''Представляет преподавателя.'''
+    def __init__(self, name, age, salary):
+        SchoolMember.__init__(self, name, age)
+        self.salary = salary
+        print('(Создан Teacher: {0})'.format(self.name))
     
+    def tell(self):
+        SchoolMember.tell(self)
+        print('Зарплата: "{0:d}"'.format(self.salary))
+
+class Student(SchoolMember):
+    '''Представляет студента.'''
+    def __init__(self, name, age, marks):
+        SchoolMember.__init__(self, name, age)
+        self.marks = marks
+        print('(Создан Student: {0})'.format(self.name))
+
+    def tell(self):
+        SchoolMember.tell(self)
+        print('Оценки: "{0:d}"'.format(self.marks))
+
+t = Teacher('Mrs. Shrividya', 40, 30000)
+s = Student('Swaroop', 25, 75)
+
+#m = SchoolMember('abc', 10)
+# Это приведёт к ошибке: "TypeError: Can't instantiate abstract class
+# SchoolMember with abstract methods tell"
+
+print() # печатаем пустую строку
+
+memberes = [t, s]
+for member in members:
+    member.tell() # работает кака для приподавателя, так и для студента
+
+
+# Ввод-вывод
+
+# Ввод от пользователя
+
+def reverse(text):
+    return text[::-1]
+
+def  is_palindrome(text):
+    return text == reverse(text)
+
+someting = input('Введите текст: ')
+if (is_palindrome(something)):
+    print("Да, это палиндром")
+else:
+    print("Нет, не палиндром")
+
+# Файлы
+
+poem = '''\
+Програмировать весело.
+Если работа скучна,
+Чтобы придать ей весёлый тон -
+    используй Python!
+'''
+
+f = open('poem.txt', 'w') # открываем для записи (writing)
+f.write(poem) # записываем текст файла
+f.close() # закрываем файл
+
+f = open('poem.txt') # если не указан режим, по умолчанию подразумевается
+                     # режим чтения ('r'eading)
+while True:
+    line = f.readline()
+    if len(line) == 0: # Нулевая длина обозначает конец файла (EOF)
+        break
+    print(line, end='')
+
+f.close() # закрываем файл
+
+
+# Pickle
+
+import pickle
+
+# имя файла, в котором мы сохраним обьект
+shoplistfile = 'shoplist.data'
+# список покупок
+shoplist = ['яблоки', 'манго', 'морковь']
+
+# Запись в файл
+f = open(shoplistfile, 'wb')
+pickle.dump(shoplist, f) # помещаем обьект в файл
+f.close()
+
+del shoplist # уничтожаем переменную shoplist
+# Считываем из хранилища
+f = open(shoplistfile, 'rb')
+storedlist = pickle.load(f) # загружаем обьект из файла
+print(storedlist)
+
+# Обработка исключений
+
+try:
+    text = input('Введите что-нибуть -->')
+except EOFError:
+    print('Ну зачем вы сделали мне EOF?')
+except KeyboardInterrupt:
+    print('Вы отменили операцию.')
+else:
+    print('Вы ввели {0}'.format(text))
+
+# Вызов исключения
+
+class ShortInputException(Exception):
+    '''Пользовательский класс исключения'''
+    def __init__(self, length, atleast):
+        Exception.__init__(self)
+        self.length = length
+        self.atleast = atleast
+    
+try:
+    text = input('Введите чот-нибудь --> ')
+    if len(text) <3:
+        raise ShortInputException(len(text), 3)
+    # Здесь может происходить  обычная робота
+except EOFError:
+    print('Ну зачем вы сделали мне EOF?')
+except ShortInputException as ex:
+    print('ShortInputException: Длина введённой строки -- {0};\
+        ожидалось, как минимум, {1}'.format(ex.length, ex.atleast))
+else:
+    print('Не было искючений.')
+
+# Try .. Finally
+
+import time
+
+try: 
+    f = open('poem.txt')
+    while True: # наш обычно способ читать файлы
+        line = f.readline()
+        if len(line) == 0:
+            break
+        print(line, end='')
+        time.sleep(2) # Пусть подождёт некоторое время
+except KeyboardInterrupt:
+    print('!! Вы отменили чтение файла.')
+finally:
+    f.close()
+    print('(Очистка: Закрытие файла)')
+
+# Оператор with
+
+with open("poem.txt") as f:
+    for line in f:
+        print(line, end='')
+        
