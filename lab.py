@@ -882,4 +882,54 @@ finally:
 with open("poem.txt") as f:
     for line in f:
         print(line, end='')
-        
+
+# Модуль sys
+
+import sys, warnings
+if sys.version_info[0] < 3:
+    warnings.warn("Для выполнения этой программы необходима как минимум \
+                   версия Python 3.0",
+         RuntimeWarning)
+
+else:
+    print('Нормальное продолжение')
+    
+# Модуль logging
+
+import os, platform, logging
+
+if platform.platform().startswich('Windows'):
+    logging_file = os.path.join(os.getenv('HOMEDRIVE'), \
+    'test.log')
+else:
+        logging_file = os.path.join(os.getenv('HOME'), 'test.log')
+
+print("Сохраняем лог в", logging_file)
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s : %(levelname)s : %(message)s',
+    filename = logging_file,
+    filemode = 'w',
+)
+
+logging.debug("Начало программы")
+logging.info("Какие-то действия")
+logging.warning("Программа умирает")
+
+# Дополнительно
+
+# Lambda-формы
+
+points = [ { 'x' : 2, 'y' : 3}, { 'x' : 4, 'y' : 1} ]
+points.sort(key=lambda i : i['y'])
+print(points)
+
+
+# Генератор списков
+
+listone = [2, 3, 4]
+listtwo = [2*i for i in listone if i > 2]
+print(listtwo)
+
+
